@@ -91,21 +91,35 @@ Option Infer Off
     End Function
 
 
+    Public Function determinemealstability() As String
+
+
+        Dim status As String = " "
+
+        If (_hasstablemeal = False) Then
+            status = "UN should supply food to support families"
+        Else
+            status = "Families in the country have access to stable meals "
+        End If
+
+        Return status
+
+
+    End Function
+
+
+
+
+
     'overrding the solution method in the base class
     Public Overrides Function offersolution() As String
 
         Dim status As String = " "
 
-        If (determinepercpopulationundernourished() < 50) Then
+        If (determinepercpopulationundernourished() > 50) Then
             status = "provide food parcels to people"
         Else
             status = "nourishment  meets standards"
-        End If
-
-        If (_hasstablemeal = False) Then
-            status = "UN should supply food"
-        Else
-            status = "more NGO should fundraise to support families"
         End If
 
         Return status
@@ -127,6 +141,8 @@ Option Infer Off
         Else
             tempfoodsecurity &= "has stable meal:" & "false" & Environment.NewLine
         End If
+
+        tempfoodsecurity &= "stable mean status:" & CStr(determinemealstability()) & Environment.NewLine
 
         If (_hasaccesstoland = True) Then
             tempfoodsecurity &= "Has access to land:" & "true" & Environment.NewLine

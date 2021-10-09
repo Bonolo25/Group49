@@ -24,17 +24,19 @@ Public Class Form1
 
 
     Private factorsofpoverty() As Factorofpoverty 'variable to store factors of poverty
-    Private numfactors As Integer
-    Private numcountries As Integer
-    Private nameofcountry As String
+    Private numfactors As Integer 'variable to store the number of factors 
+    Private numcountries As Integer 'variable to store the number of countries
+    Private nameofcountry As String   'variable to store the name of the country
 
-    Private myfileobj As FileStream
-    Private mybinaryformatter As BinaryFormatter
+    Private myfileobj As FileStream 'variable to store file objects
+    Private mybinaryformatter As BinaryFormatter 'variable to convert data from binary and from binary to data 
 
 
 
     Private Sub Btnsetup_Click(sender As Object, e As EventArgs) Handles Btnsetup.Click
 
+
+        MsgBox("WELCOME")
 
         Dim iscontinue As Boolean = True 'variable to control try blocks
         Dim counter As Integer = 0
@@ -60,7 +62,7 @@ Public Class Form1
                 End While
                 iscontinue = False 'while loop exits if the correct data is input
             Catch entryexp As Exception
-                MsgBox("only enter inter values")
+                MsgBox("only enter integer values")
                 iscontinue = True 'while loop continues to run if incorrect data is provided 
             End Try
         End While
@@ -88,7 +90,9 @@ Public Class Form1
                         employment.numofpeopleuEmployed = CInt(InputBox("please enter the number of people unemployed in the country"))
                         employment.numofpeopleEmployed = CInt(InputBox("please enter the number of people employed in the country"))
                         employment.minimumwage = CInt(InputBox("please enter the minimum wage as stipulated by the UN"))
+                        employment.haseducation = CBool(InputBox("state whether the majority of the country is educated" & "1 for true" & " " & "0 for false"))
                         employment.calcpercentageunemployed()
+                        employment.calcpercentangeemployed()
                         employment.determinesalarystandardratio()
 
                         factorsofpoverty(f) = employment 'upcasting employment into factor of poverty
@@ -102,6 +106,7 @@ Public Class Form1
                         foodsecurity.numoffamilymembers = CInt(InputBox("please enter the average  number of family members in the country"))
                         foodsecurity.numofpeopleundernourished = CInt(InputBox("Enter the number of undernourished people in the country"))
                         foodsecurity.determinepercpopulationundernourished()
+                        foodsecurity.determinemealstability()
 
                         factorsofpoverty(f) = foodsecurity 'upcasting foodsecurity into the  factorofpoverty  object
 
@@ -110,15 +115,15 @@ Public Class Form1
                 factorsofpoverty(f).offersolution() 'polymorphism
 
                 'Downcasting and displaying
-                Dim objEmployment As Employment
-                objEmployment = TryCast(factorsofpoverty(f), Employment)
-                If Not (objEmployment Is Nothing) Then
+                Dim objEmployment As Employment  'variable to store employment object
+                objEmployment = TryCast(factorsofpoverty(f), Employment) 'downcast object of type base class into employment type
+                If Not (objEmployment Is Nothing) Then  'check whether the object is not a null pointer
                     txtdisplay.Text &= objEmployment.display() & Environment.NewLine
                 End If
 
-                Dim objFoodSecurity As foodsecurity
-                objFoodSecurity = TryCast(factorsofpoverty(f), foodsecurity)
-                If Not (objFoodSecurity Is Nothing) Then
+                Dim objFoodSecurity As foodsecurity 'variable to store the food security obj
+                objFoodSecurity = TryCast(factorsofpoverty(f), foodsecurity) 'downcast obj of type factorofpoverty into foody
+                If Not (objFoodSecurity Is Nothing) Then 'check whether the variable is not a null pointer 
                     txtdisplay.Text &= objFoodSecurity.display() & Environment.NewLine
                 End If
             Next
@@ -133,9 +138,9 @@ Public Class Form1
 
 
         myfileobj = New FileStream("group49.txt", FileMode.Create, FileAccess.Write) ' opening the file obj
-        mybinaryformatter = New BinaryFormatter()
+        mybinaryformatter = New BinaryFormatter() 'allocate memory for the binary formater obj
         For f As Integer = 1 To numfactors
-            mybinaryformatter.Serialize(myfileobj, factorsofpoverty(f))
+            mybinaryformatter.Serialize(myfileobj, factorsofpoverty(f)) 'convert from data to binary
         Next
 
         myfileobj.Close() 'closing the file obj

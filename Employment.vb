@@ -55,7 +55,7 @@ Option Strict On
     End Property
 
 
-
+    'property method to set and retrieve education status
     Public Property haseducation As Boolean
         Get
             Return _haseducation
@@ -116,6 +116,19 @@ Option Strict On
     End Function
 
 
+    'function to calculate the percentage of the population that is employed
+
+    Public Function calcpercentangeemployed() As Double
+
+
+        Dim percentage As Double
+
+        percentage = (numofpeopleEmployed / _populationofcountry) * 100
+        Return percentage
+
+    End Function
+
+
     'function to determine if an employee is getting paid according to the UN standards 
 
     Public Function determinesalarystandardratio() As String
@@ -152,7 +165,7 @@ Option Strict On
         If (calcpercentageunemployed() < 50) Then
             status = "more jobs should be created"
         Else
-            status = "more skilled workers should be trained"
+            status = "The country has a stable number of people employed"
         End If
 
         Return status
@@ -170,7 +183,13 @@ Option Strict On
         tempemployment &= "minimum wage:$" & _minimumwage & Environment.NewLine
         tempemployment &= "number of people employed:" & _numofpeopleEmployed & Environment.NewLine
         tempemployment &= "number of people unemployed:" & _numpeoplueEmployed & Environment.NewLine
+        If haseducation = True Then
+            tempemployment &= "has Education:" & "TRUE" & Environment.NewLine
+        Else
+            tempemployment &= "has Education:" & "FALSE" & Environment.NewLine
+        End If
         tempemployment &= "minimum wage:" & CStr(determinesalarystandardratio()) & Environment.NewLine
+        tempemployment &= "percentage of people employed:" & CStr(calcpercentangeemployed()) & "%" & Environment.NewLine
         tempemployment &= "percentage of people unemployed:" & CStr(calcpercentageunemployed()) & "%" & Environment.NewLine
 
         Return tempemployment
